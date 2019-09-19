@@ -23,10 +23,32 @@ describe('friends model', () => {
     it('should insert friends into db', async () => {
         const [id] = await Friends.insert({ name: "Ann"});
 
-        let hobbit = await db('friends')
+        let friend = await db('friends')
             .where({ id })
             .first();
-        expect(hobbit.name).toBe('Ann');
+        expect(friend.name).toBe('Ann');
     })
-})
+  })
+
+  describe('remove()', () => {
+    it('should remove friends into db', async () => {
+       await Friends.remove({ name: 'Ann' });
+       await Friends.remove({ name: 'Richard' });
+
+        let friends = await db('friends');
+        expect(friends).toHaveLength(0);
+    })
+
+    it('should remove friends by id', async () => {
+      const friend1 = { name: 'Ann'}
+      const friend2 = { name: 'Richard'}
+
+      await Friends.insert(friend1)
+      await Friends.insert(friend2)
+
+      await Friends.remove(1)
+      let removeFriends = await Friends.remove(1)
+      expect(removeFriends).toBeFalsy();
+    })
+  })
 });

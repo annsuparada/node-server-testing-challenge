@@ -19,7 +19,7 @@ async function update(id, changes) {
 function remove(id) {
   return db('friends')
     .where({id})
-    .remove(id);
+    .delete(id);
 }
 
 function getAll() {
